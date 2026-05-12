@@ -27,13 +27,11 @@ export function  EditModal() {
              </div>
       <Modal.Backdrop>
         <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-md">
+          <Modal.Dialog className="sm:max-w-xl">
             <Modal.CloseTrigger />
             <Modal.Header>
-              <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-                <Envelope className="size-5" />
-              </Modal.Icon>
-              <Modal.Heading>Contact Us</Modal.Heading>
+              
+              <Modal.Heading>Edit Destinations</Modal.Heading>
              
             </Modal.Header>
             <Modal.Body className="p-6">
