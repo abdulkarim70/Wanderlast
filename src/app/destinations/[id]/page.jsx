@@ -1,6 +1,8 @@
+import { EditModal } from '@/components/EditModal';
 import { Button } from '@heroui/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { BiEdit } from 'react-icons/bi';
 import { FaExternalLinkAlt, FaRegCalendar } from "react-icons/fa";
 import {  RiMapPin2Fill } from "react-icons/ri";
 
@@ -12,8 +14,8 @@ const DestinationDetailsPage = async({params}) => {
     const {imageUrl, price , destinationName, duration , country, description}=destination
     return (
         <div className='max-w-7xl mx-auto'>
-           Destination Deatils page
-           <Image
+       <EditModal/>
+           <Image className='w-full h-96 object-cover'
            alt={destinationName}
            src={imageUrl}
            height={400}
