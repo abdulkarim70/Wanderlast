@@ -2,29 +2,34 @@
 
 import {Envelope} from "@gravity-ui/icons";
 import {Button, FieldError, Input, Label, Modal, Surface, TextArea, TextField, Select, ListBox} from "@heroui/react";
+import { redirect } from "next/dist/server/api-utils";
 import { BiEdit } from "react-icons/bi";
+import { GiCookingGlove } from "react-icons/gi";
 
-export function  EditModal() {
+export function  EditModal({destination}) {
+  const {imageUrl, price ,departureDate, destinationName, duration , country, description,category,_id}=destination
      const onSubmit=async(e)=>{
         e.preventDefault()
         const formData= new FormData(e.currentTarget)
         const destination=Object.fromEntries(formData.entries())
-        
-        // const res=await fetch('http://localhost:5000/destination',{
-        //     method:'POST',
-        //     headers:{
-        //         'content-type':'application/json'
-        //     },
-        //     body:JSON.stringify(destination)
-        // })
-        // const data=await res.json()
-        
+        // console.log(destination)
+      
+        const res=await fetch(`http://localhost:5000/destination/${_id}`,{
+            method:'PATCH',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(destination)
+        })
+        const data=await res.json()
+        redirect('/destinations')
+        console.log(data)
     }
   return (
     <Modal>
-      <div className='flex justify-end'>
-              <Button variant='outline' className="rounded-none mt-5 mb-3"><BiEdit/>Edit</Button>
-             </div>
+      
+              <Button variant='outline' className="rounded-none"><BiEdit/>Edit</Button>
+          
       <Modal.Backdrop>
         <Modal.Container placement="auto">
           <Modal.Dialog className="sm:max-w-xl">
@@ -42,15 +47,15 @@ export function  EditModal() {
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                          {/* Destination Name */}
                          <div className="md:col-span-2">
-                           <TextField name="destinationName" isRequired>
+                           <TextField defaultValue={destinationName} name="destinationName" isRequired>
                              <Label>Destination Name</Label>
-                             <Input placeholder="Bali Paradise" className="rounded-2xl" />
+                             <Input  placeholder="Bali Paradise" className="rounded-2xl" />
                              <FieldError />
                            </TextField>
                          </div>
            
                          {/* Country */}
-                         <TextField name="country" isRequired>
+                         <TextField defaultValue={country} name="country" isRequired>
                            <Label>Country</Label>
                            <Input placeholder="Indonesia" className="rounded-2xl" />
                            <FieldError />
@@ -59,6 +64,7 @@ export function  EditModal() {
                          {/* Category - Updated Select Component */}
                          <div>
                            <Select
+                           defaultValue={category}
                              name="category"
                              isRequired
                              className="w-full"
@@ -101,7 +107,7 @@ export function  EditModal() {
                          </div>
            
                          {/* Price */}
-                         <TextField name="price" type="number" isRequired>
+                         <TextField defaultValue={price} name="price" type="number" isRequired>
                            <Label>Price (USD)</Label>
                            <Input
                              type="number"
@@ -112,7 +118,7 @@ export function  EditModal() {
                          </TextField>
            
                          {/* Duration */}
-                         <TextField name="duration" isRequired>
+                         <TextField defaultValue={duration} name="duration" isRequired>
                            <Label>Duration</Label>
                            <Input
                              placeholder="7 Days / 6 Nights"
@@ -123,7 +129,7 @@ export function  EditModal() {
            
                          {/* Departure Date */}
                          <div className="md:col-span-2">
-                           <TextField name="departureDate" type="date" isRequired>
+                           <TextField defaultValue={departureDate} name="departureDate" type="date" isRequired>
                              <Label>Departure Date</Label>
                              <Input type="date" className="rounded-2xl" />
                              <FieldError />
@@ -132,7 +138,7 @@ export function  EditModal() {
            
                          {/* Image URL - Removed preview */}
                          <div className="md:col-span-2">
-                           <TextField name="imageUrl" isRequired>
+                           <TextField defaultValue={imageUrl} name="imageUrl" isRequired>
                              <Label>Image URL</Label>
                              <Input
                                type="url"
@@ -145,7 +151,7 @@ export function  EditModal() {
            
                          {/* Description */}
                          <div className="md:col-span-2">
-                           <TextField name="description" isRequired>
+                           <TextField defaultValue={description} name="description" isRequired>
                              <Label>Description</Label>
                              <TextArea
                                placeholder="Describe the travel experience..."
@@ -158,23 +164,15 @@ export function  EditModal() {
            
                        {/* Buttons */}
            
-                       <Button
-                         type="submit"
-                         variant="outline"
-                      
-                         className=" rounded-none w-full bg-cyan-500 text-white"
-                       >
-                         Add Destination
-                       </Button>
+                       
+                       <Modal.Footer>
+          
+              <Button type="submit" slot="close">Save</Button>
+            </Modal.Footer>
                      </form>
               </Surface>
             </Modal.Body>
-            <Modal.Footer>
-              <Button slot="close" variant="secondary">
-                Cancel
-              </Button>
-              <Button slot="close">Send Message</Button>
-            </Modal.Footer>
+            
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>
